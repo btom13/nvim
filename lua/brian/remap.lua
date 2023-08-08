@@ -5,31 +5,38 @@ vim.keymap.set('n', '<Tab>', '<C-W>w');
 vim.keymap.set('n', '<S-Tab>', '<C-W>W');
 
 vim.keymap.set('n', '<leader>ts', function()
-    local file = vim.fn.expand('%:p')
-    if vim.fn.expand('%:e') ~= 'ts' and vim.fn.expand('%:e') ~= 'js'
-        and vim.fn.expand('%:e') ~= 'py' then
-        return
-    end
-    vim.cmd('w')
-    if vim.fn.expand('%:e') == 'ts' then
-        vim.cmd('!echo; ts-node-esm ' .. file)
-    end
-    if vim.fn.expand('%:e') == 'js' then
-        vim.cmd('!echo; node ' .. file)
-    end
-    if vim.fn.expand('%:e') == 'py' then
-        vim.cmd('!echo; python3 ' .. file)
-    end
+  local file = vim.fn.expand('%:p')
+  if vim.fn.expand('%:e') ~= 'ts' and vim.fn.expand('%:e') ~= 'js'
+      and vim.fn.expand('%:e') ~= 'py' then
+    return
+  end
+  vim.cmd('w')
+  if vim.fn.expand('%:e') == 'ts' then
+    vim.cmd('!echo; ts-node-esm ' .. file)
+  end
+  if vim.fn.expand('%:e') == 'js' then
+    vim.cmd('!echo; node ' .. file)
+  end
+  if vim.fn.expand('%:e') == 'py' then
+    vim.cmd('!echo; python3 ' .. file)
+  end
 end)
 
 -- types console.log() if current file is .js or .ts or .svelte
+-- types print() if current file is .py
 vim.keymap.set('n', "<leader>l", function()
-    if vim.fn.expand('%:e') ~= 'js' and vim.fn.expand('%:e') ~= 'ts' and vim.fn.expand('%:e') ~= 'svelte' then
-        return
-    end
+  if vim.fn.expand('%:e') ~= 'js' and vim.fn.expand('%:e') ~= 'ts'
+    and vim.fn.expand('%:e') ~= 'svelte' and vim.fn.expand('%:e') ~= 'py' then
+    return
+  end
+  if vim.fn.expand('%:e') == 'js' or vim.fn.expand('%:e') == 'ts' or vim.fn.expand('%:e') == 'svelte' then
     vim.api.nvim_put({ 'console.log();' }, 'l', true, false)
-    vim.cmd('normal $h')
-    vim.cmd('startinsert')
+  end
+  if vim.fn.expand('%:e') == 'py' then
+    vim.api.nvim_put({ 'print()' }, 'l', true, false)
+  end
+  vim.cmd('normal $h')
+  vim.cmd('startinsert')
 end)
 
 
@@ -74,5 +81,5 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");
 
 vim.keymap.set("n", "<leader><leader>", function()
-    vim.cmd("so")
+  vim.cmd("so")
 end)
