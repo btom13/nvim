@@ -26,16 +26,15 @@ end)
 -- types print() if current file is .py
 vim.keymap.set('n', "<leader>l", function()
   if vim.fn.expand('%:e') ~= 'js' and vim.fn.expand('%:e') ~= 'ts'
-    and vim.fn.expand('%:e') ~= 'svelte' and vim.fn.expand('%:e') ~= 'py' then
+      and vim.fn.expand('%:e') ~= 'svelte' and vim.fn.expand('%:e') ~= 'py' then
     return
   end
   if vim.fn.expand('%:e') == 'js' or vim.fn.expand('%:e') == 'ts' or vim.fn.expand('%:e') == 'svelte' then
-    vim.api.nvim_put({ 'console.log();' }, 'l', true, false)
+    vim.cmd('normal oconsole.log()')
   end
   if vim.fn.expand('%:e') == 'py' then
-    vim.api.nvim_put({ 'print()' }, 'l', true, false)
+    vim.cmd('normal oprint()')
   end
-  vim.cmd('normal $h')
   vim.cmd('startinsert')
 end)
 
